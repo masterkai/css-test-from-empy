@@ -1,31 +1,49 @@
 $(function () {
     // console.log('ready!!')
-    const state = {
-        darkMode: true
-    }
-    $('#ModeSwitchButton').click(() => {
-        console.log('being clicked!!')
-        $('.dark_mode_switch_icon').toggleClass('active')
-        if ($('.dark_mode_switch_icon').hasClass('active') === true) {
-            state.darkMode = false
-            document.body.style.backgroundColor = '#18191a'
-            console.log('state.darkMode:', state.darkMode)
-            $('.dark_mode_switch').css('background-color', '#ffb74d')
-        } else {
-            state.darkMode = true
-            document.body.style.backgroundColor = 'white'
-            $('.dark_mode_switch').css('background-color', '#929292')
-            console.log('state.darkMode:', state.darkMode)
-        }
-    })
+    darkModeSwitchToggle()
     //dwb_header-RightContainer
     // mectrl_main_body
     const mectrl_main_body = document.querySelector('#mectrl_main_body')
     $('.box_portrait .box_img_portrait').click(() => {
         if (mectrl_main_body.style.display === 'none') {
             mectrl_main_body.style.display = 'block'
+            darkModeSwitchToggle()
         } else if ((mectrl_main_body.style.display = 'block')) {
             mectrl_main_body.style.display = 'none'
         }
     })
+
+    function darkModeSwitchToggle() {
+        const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]')
+
+        function switchTheme(e) {
+            if (e.target.checked) {
+                document.documentElement.setAttribute('data-theme', 'dark')
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light')
+            }
+        }
+
+        toggleSwitch.addEventListener('change', switchTheme, false)
+
+        function switchTheme(e) {
+            if (e.target.checked) {
+                document.documentElement.setAttribute('data-theme', 'dark')
+                localStorage.setItem('theme', 'dark') //add this
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light')
+                localStorage.setItem('theme', 'light') //add this
+            }
+        }
+
+        const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null
+
+        if (currentTheme) {
+            document.documentElement.setAttribute('data-theme', currentTheme)
+
+            if (currentTheme === 'dark') {
+                toggleSwitch.checked = true
+            }
+        }
+    }
 })
